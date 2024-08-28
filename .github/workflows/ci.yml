@@ -28,14 +28,4 @@ jobs:
           build-root-directory: app
       
       - run: cd app && ./gradlew checkstyleMain
-      - run: cd app && ./gradlew test
-      - run: cd app && ./gradlew jacocoTestReport
-
-      - name: Publish code coverage
-        uses: paambaati/codeclimate-action@v5.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageCommand: cd app && ./gradlew jacocoTestReport
-          coverageLocations: ${{ github.workspace }}/app/build/reports/jacoco/test/jacocoTestReport.xml
-          coverageInputType: jacoco
+      - run: cd app && ./gradlew build
