@@ -29,3 +29,13 @@ jobs:
       
       - run: cd app && ./gradlew checkstyleMain
       - run: cd app && ./gradlew build
+      
+      - name: Build Docker image
+        run: |
+          docker build -t your-image-name -f app/Dockerfile app
+          
+      - name: Push Docker image
+        run: |
+          echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+          docker tag your-image-name your-docker-hub-repo/your-image-name:latest
+          docker push your-docker-hub-repo/your-image-name:latest
