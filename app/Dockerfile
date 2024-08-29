@@ -12,4 +12,6 @@ WORKDIR /app
 
 COPY --from=build /app/build/install/app /app
 
+RUN chmod +x /app/bin/app
+
 CMD ["./bin/app"]
