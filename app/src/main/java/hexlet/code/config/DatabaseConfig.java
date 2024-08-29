@@ -12,14 +12,11 @@ public class DatabaseConfig {
         HikariConfig config = new HikariConfig();
 
         if (jdbcUrl == null || jdbcUrl.isEmpty()) {
-            config.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1");
-            config.setDriverClassName("org.h2.Driver");
-            config.setUsername("sa");
-            config.setPassword("");
-        } else {
-            config.setJdbcUrl(jdbcUrl);
-            config.setDriverClassName("org.postgresql.Driver");
+            throw new IllegalStateException("JDBC_DATABASE_URL environment variable is not set.");
         }
+
+        config.setJdbcUrl(jdbcUrl);
+        config.setDriverClassName("org.postgresql.Driver");
 
         return new HikariDataSource(config);
     }
