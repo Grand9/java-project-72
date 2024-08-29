@@ -6,7 +6,7 @@ COPY . .
 
 RUN gradle installDist
 
-FROM openjdk:21-jdk-alpine
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
