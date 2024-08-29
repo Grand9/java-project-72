@@ -12,7 +12,7 @@ public class DatabaseInitializer {
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
 
-            String schemaSql = new String(Files.readAllBytes(Paths.get("src/main/resources/schema.sql")));
+            String schemaSql = new String(Files.readAllBytes(Paths.get("app/src/main/resources/schema.sql")));
 
             statement.execute(schemaSql);
         } catch (Exception e) {
