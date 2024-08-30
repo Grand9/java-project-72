@@ -1,5 +1,8 @@
 package hexlet.code;
 
+import gg.jte.ContentType;
+import gg.jte.TemplateEngine;
+import gg.jte.resolve.ResourceCodeResolver;
 import hexlet.code.config.DatabaseConfig;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
@@ -17,12 +20,18 @@ public class App {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
+    private static TemplateEngine createTemplateEngine() {
+        ClassLoader classLoader = App.class.getClassLoader();
+        ResourceCodeResolver codeResolver = new ResourceCodeResolver("templates", classLoader);
+        return TemplateEngine.create(codeResolver, ContentType.Html);
+    }
+
     public static Javalin getApp() {
-        var app = Javalin.create(config -> config.fileRenderer(new JavalinJte()));
+        var app = Javalin.create(config -> config.fileRenderer(new JavalinJte(createTemplateEngine())));
 
         app.get("/", ctx -> {
             LOGGER.info("Request received at /");
-            ctx.result("Hello World");
+            ctx.render("index.jte");
         });
 
         return app;
@@ -47,7 +56,6 @@ public class App {
             }
 
             String schemaSql = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-
             statement.execute(schemaSql);
 
             LOGGER.info("Database initialized successfully");
@@ -55,5 +63,4 @@ public class App {
             LOGGER.error("Failed to initialize database", e);
         }
     }
-
 }
