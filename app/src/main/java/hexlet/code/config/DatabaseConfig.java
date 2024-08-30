@@ -8,10 +8,13 @@ import javax.sql.DataSource;
 public class DatabaseConfig {
 
     public static DataSource createDataSource() {
-        String jdbcUrl = "jdbc:postgresql://dpg-cr8ntrd6l47c73bmhkeg-a:5432/"
-                + "grand_db?user=grand&password=3CYROPcoXXSOBszgyI1LkaGq9gH1FeK9";
-        HikariConfig config = new HikariConfig();
+        String jdbcUrl = System.getenv("JDBC_DATABASE_URL");
+        
+        if (jdbcUrl == null || jdbcUrl.isEmpty()) {
+            throw new IllegalStateException("JDBC_DATABASE_URL environment variable is not set");
+        }
 
+        HikariConfig config = new HikariConfig();
         config.setJdbcUrl(jdbcUrl);
         config.setDriverClassName("org.postgresql.Driver");
 
