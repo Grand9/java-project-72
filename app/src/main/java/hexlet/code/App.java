@@ -5,11 +5,13 @@ import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.sql.DataSource;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.Statement;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class App {
 
@@ -39,7 +41,12 @@ public class App {
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
 
-            String schemaSql = new String(Files.readAllBytes(Paths.get("src/main/resources/schema.sql")));
+            InputStream inputStream = App.class.getClassLoader().getResourceAsStream("schema.sql");
+            if (inputStream == null) {
+                throw new FileNotFoundException("Resource not found: schema.sql");
+            }
+
+            String schemaSql = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 
             statement.execute(schemaSql);
 
@@ -48,4 +55,5 @@ public class App {
             LOGGER.error("Failed to initialize database", e);
         }
     }
+
 }
