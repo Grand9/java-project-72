@@ -37,7 +37,8 @@ public class UrlController {
         try {
             URI uri = new URI(urlInput);
             URL url = uri.toURL();
-            String domain = String.format("%s://%s%s", url.getProtocol(), url.getHost(), url.getPort() != -1 ? ":" + url.getPort() : "");
+            String domain = String.format("%s://%s%s", url.getProtocol(), url.getHost(),
+                    url.getPort() != -1 ? ":" + url.getPort() : "");
 
             LocalDateTime now = LocalDateTime.now();
             Url urlObject = new Url(domain, now);

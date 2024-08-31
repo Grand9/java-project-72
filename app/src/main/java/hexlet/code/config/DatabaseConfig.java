@@ -5,7 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 import javax.sql.DataSource;
 
-public class DatabaseConfig {
+public final class DatabaseConfig {
 
     private static final String JDBC_URL_ENV_VAR = "JDBC_DATABASE_URL";
 
