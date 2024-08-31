@@ -24,6 +24,9 @@ public final class DatabaseConfig {
         config.setMaximumPoolSize(10);
         config.setConnectionTimeout(30000);
 
+        config.setIdleTimeout(600000);
+        config.setMaxLifetime(1800000);
+
         return new HikariDataSource(config);
     }
 }

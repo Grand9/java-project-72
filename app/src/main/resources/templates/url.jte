@@ -10,9 +10,9 @@
 <div class="container">
     <h1 class="mt-5">URL Details</h1>
     <div class="mt-4">
-        <h2>${url.getName()}</h2>
-        <p>ID: ${url.getId()}</p>
-        <p>Дата добавления: ${url.getCreatedAt()}</p>
+        <h2>${url.name}</h2>
+        <p>ID: ${url.id}</p>
+        <p>Дата добавления: ${url.createdAt}</p>
     </div>
     <a href="/urls" class="btn btn-secondary mt-3">Back to URL list</a>
 </div>

@@ -25,7 +25,6 @@ public class UrlController {
     public Handler showFormHandler = ctx -> ctx.render("index.jte", Map.of("flashMessages",
             getFlashMessages(ctx)));
 
-
     public Handler createUrlHandler = ctx -> {
         String urlInput = ctx.formParam("url");
         if (urlInput == null || urlInput.isEmpty()) {
@@ -66,7 +65,10 @@ public class UrlController {
             ctx.redirect("/");
             return;
         }
-        ctx.render("urls.jte", Map.of("urls", urls, "flashMessages", getFlashMessages(ctx)));
+        Map<String, Object> model = new HashMap<>();
+        model.put("urls", urls);
+        model.put("flashMessages", getFlashMessages(ctx));
+        ctx.render("urls.jte", model);
     };
 
     public Handler showUrlHandler = ctx -> {

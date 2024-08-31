@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
@@ -62,9 +63,9 @@ public class App {
 
     private static void initializeDatabase(DataSource dataSource) throws SQLException {
         try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement()) {
+             Statement statement = connection.createStatement();
+             InputStream inputStream = App.class.getClassLoader().getResourceAsStream("schema.sql")) {
 
-            InputStream inputStream = App.class.getClassLoader().getResourceAsStream("schema.sql");
             if (inputStream == null) {
                 throw new FileNotFoundException("Resource not found: schema.sql");
             }
@@ -73,11 +74,12 @@ public class App {
             statement.execute(schemaSql);
 
             LOGGER.info("Database initialized successfully");
+        } catch (IOException e) {
+            LOGGER.error("Failed to read schema file", e);
+            throw new SQLException("Failed to read schema file", e);
         } catch (SQLException e) {
-            throw new SQLException("Error initializing the database", e);
-        } catch (Exception e) {
-            LOGGER.error("An unexpected error occurred", e);
-            throw new SQLException("An unexpected error occurred", e);
+            LOGGER.error("Error executing SQL", e);
+            throw new SQLException("Error executing SQL", e);
         }
     }
 }

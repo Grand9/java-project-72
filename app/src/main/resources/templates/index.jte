@@ -18,7 +18,7 @@
         <button type="submit" class="btn btn-primary">Добавить</button>
     </form>
 
-    @if(flashMessages != null && !flashMessages.isEmpty())
+    @if (flashMessages != null && !flashMessages.isEmpty())
         <div class="alert alert-${flashMessages.get("type")} mt-4">
             ${flashMessages.get("message")}
         </div>

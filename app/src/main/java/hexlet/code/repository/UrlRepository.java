@@ -3,6 +3,7 @@ package hexlet.code.repository;
 import hexlet.code.model.Url;
 import hexlet.code.config.DatabaseConfig;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,15 +16,16 @@ import java.util.List;
 
 public class UrlRepository {
 
-    private final Connection connection;
+    private final DataSource dataSource;
 
-    public UrlRepository() throws SQLException {
-        this.connection = DatabaseConfig.createDataSource().getConnection();
+    public UrlRepository() {
+        this.dataSource = DatabaseConfig.createDataSource();
     }
 
     public void save(Url url) throws SQLException {
         String query = "INSERT INTO urls (name, created_at) VALUES (?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, url.getName());
             stmt.setTimestamp(2, Timestamp.valueOf(url.getCreatedAt()));
             stmt.executeUpdate();
@@ -32,7 +34,8 @@ public class UrlRepository {
 
     public boolean existsByName(String name) throws SQLException {
         String query = "SELECT COUNT(*) FROM urls WHERE name = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, name);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
@@ -46,7 +49,8 @@ public class UrlRepository {
     public List<Url> findAll() throws SQLException {
         String query = "SELECT * FROM urls ORDER BY created_at DESC";
         List<Url> urls = new ArrayList<>();
-        try (Statement stmt = connection.createStatement();
+        try (Connection connection = dataSource.getConnection();
+             Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 Timestamp timestamp = rs.getTimestamp("created_at");
@@ -59,7 +63,8 @@ public class UrlRepository {
 
     public Url findById(int id) throws SQLException {
         String query = "SELECT * FROM urls WHERE id = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
