@@ -3,6 +3,7 @@ plugins {
     id("checkstyle")
     id("application")
     id("jacoco")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "hexlet.code"
@@ -37,4 +38,9 @@ application {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
