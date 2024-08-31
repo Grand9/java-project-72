@@ -1,28 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная страница</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>URL Submission</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container">
-    <h1 class="mt-5">Добро пожаловать на главную страницу!</h1>
-
-    <form action="/urls" method="POST" class="mt-4">
-        <div class="mb-3">
-            <label for="url" class="form-label">Введите URL:</label>
-            <input type="text" name="url" id="url" class="form-control" placeholder="https://example.com" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Добавить</button>
-    </form>
-
-    @if (flashMessages != null && !flashMessages.isEmpty())
-        <div class="alert alert-${flashMessages.get("type")} mt-4">
-            ${flashMessages.get("message")}
+    @if (flashMessage != null && !flashMessage.isEmpty())
+        <div class="alert alert-${flashType}" role="alert">
+            ${flashMessage}
         </div>
     @endif
+
+    <h1>Submit a URL</h1>
+    <form action="/urls" method="post">
+        <div class="form-group">
+            <label for="url">URL</label>
+            <input type="text" id="url" name="url" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 </div>
 </body>
 </html>

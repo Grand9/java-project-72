@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>URL Details</title>
+    <title>URL</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container">
-    <h1 class="mt-5">URL Details</h1>
+    <h1 class="mt-5">Информация о URL</h1>
+
+    @if (flashMessages != null && !flashMessages.isEmpty())
+        <div class="alert alert-${flashMessages.get("type")} mt-4">
+            ${flashMessages.get("message")}
+        </div>
+    @endif
+
     <div class="mt-4">
-        <h2>${url.name}</h2>
-        <p>ID: ${url.id}</p>
-        <p>Дата добавления: ${url.createdAt}</p>
+        <h3>${url.getName()}</h3>
+        <p>Дата создания: ${url.getCreatedAt()}</p>
     </div>
-    <a href="/urls" class="btn btn-secondary mt-3">Back to URL list</a>
 </div>
 </body>
 </html>
