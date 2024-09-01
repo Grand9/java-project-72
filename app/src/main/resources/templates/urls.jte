@@ -1,6 +1,5 @@
 @import hexlet.code.dto.urls.UrlsPage
 @import hexlet.code.util.NamedRoutes
-@import java.time.format.DateTimeFormatter
 
 @param UrlsPage page
 
@@ -35,7 +34,7 @@
             <tr>
                 <td>${url.getId()}</td>
                 <td><a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a></td>
-                <td>${url.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))}</td>
+                <td>${url.getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))}</td>
             </tr>
         @endfor
         </tbody>

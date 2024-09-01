@@ -1,5 +1,4 @@
 @import hexlet.code.dto.urls.UrlsPage
-@import java.time.format.DateTimeFormatter
 
 @param UrlsPage page
 
@@ -35,7 +34,7 @@
             <tr>
                 <td>${url.getId()}</td>
                 <td>${url.getName()}</td>
-                <td>${url.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))}</td>
+                <td>${url.getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))}</td>
             </tr>
         @endfor
         </tbody>
