@@ -22,17 +22,20 @@ public class UrlRepository {
         this.dataSource = DatabaseConfig.createDataSource();
     }
 
-    public void save(Url url) throws SQLException {
+    public void save(Url url) {
         String query = "INSERT INTO urls (name, created_at) VALUES (?, ?)";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, url.getName());
             stmt.setTimestamp(2, Timestamp.valueOf(url.getCreatedAt()));
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            // Логирование ошибки или дополнительная обработка
+            throw new RuntimeException("Error saving URL to database", e);
         }
     }
 
-    public boolean existsByName(String name) throws SQLException {
+    public boolean existsByName(String name) {
         String query = "SELECT COUNT(*) FROM urls WHERE name = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -42,11 +45,14 @@ public class UrlRepository {
                     return rs.getInt(1) > 0;
                 }
             }
+        } catch (SQLException e) {
+            // Логирование ошибки или дополнительная обработка
+            throw new RuntimeException("Error checking if URL exists", e);
         }
         return false;
     }
 
-    public List<Url> findAll() throws SQLException {
+    public List<Url> findAll() {
         String query = "SELECT * FROM urls ORDER BY created_at DESC";
         List<Url> urls = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
@@ -57,11 +63,14 @@ public class UrlRepository {
                 LocalDateTime createdAt = timestamp.toLocalDateTime();
                 urls.add(new Url(rs.getInt("id"), rs.getString("name"), createdAt));
             }
+        } catch (SQLException e) {
+            // Логирование ошибки или дополнительная обработка
+            throw new RuntimeException("Error finding all URLs", e);
         }
         return urls;
     }
 
-    public Url findById(int id) throws SQLException {
+    public Url findById(int id) {
         String query = "SELECT * FROM urls WHERE id = ?";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -73,6 +82,9 @@ public class UrlRepository {
                     return new Url(rs.getInt("id"), rs.getString("name"), createdAt);
                 }
             }
+        } catch (SQLException e) {
+            // Логирование ошибки или дополнительная обработка
+            throw new RuntimeException("Error finding URL by ID", e);
         }
         return null;
     }
