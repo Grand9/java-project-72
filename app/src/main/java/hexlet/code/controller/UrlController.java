@@ -24,11 +24,11 @@ public class UrlController {
         if (url == null) {
             throw new NotFoundResponse("URL not found");
         }
-        // Передача объекта url в шаблон через карту
         Map<String, Object> model = new HashMap<>();
         model.put("url", url);
         ctx.render("url/show.jte", model);
     };
+
 
     public Handler createUrlHandler = ctx -> {
         String name = ctx.formParam("name");
