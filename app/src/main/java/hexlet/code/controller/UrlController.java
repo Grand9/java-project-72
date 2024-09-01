@@ -17,20 +17,25 @@ import java.util.Map;
 
 public class UrlController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UrlController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UrlController.class);
     private UrlRepository urlRepository;
 
-    // Конструктор с инициализацией UrlRepository
+    // Конструктор без инициализации UrlRepository
     public UrlController(UrlRepository urlRepository) {
-        if (urlRepository == null) {
-            throw new IllegalArgumentException("UrlRepository cannot be null");
+        // Отложенная инициализация
+    }
+
+    // Метод для инициализации UrlRepository
+    public void setUrlRepository(UrlRepository urlRepository) {
+        if (this.urlRepository != null) {
+            throw new IllegalStateException("UrlRepository уже инициализирован");
         }
         this.urlRepository = urlRepository;
     }
 
     private void ensureRepositoryInitialized() {
         if (urlRepository == null) {
-            throw new IllegalStateException("UrlRepository is not initialized");
+            throw new IllegalStateException("UrlRepository не инициализирован");
         }
     }
 
@@ -38,8 +43,12 @@ public class UrlController {
         ensureRepositoryInitialized();
         String flashMessage = ctx.consumeSessionAttribute("flash");
         String flashType = ctx.consumeSessionAttribute("flashType");
-        if (flashMessage == null) flashMessage = "";
-        if (flashType == null) flashType = "info";
+        if (flashMessage == null) {
+            flashMessage = "";
+        }
+        if (flashType == null) {
+            flashType = "info";
+        }
 
         Map<String, Object> model = new HashMap<>();
         model.put("flashMessage", flashMessage);
@@ -76,7 +85,7 @@ public class UrlController {
             } catch (URISyntaxException e) {
                 message = "Некорректный URL";
                 type = "error";
-                logger.error("Error processing URL: {}", urlInput, e);
+                LOGGER.error("Error processing URL: {}", urlInput, e);
             }
             ctx.sessionAttribute("flashType", type);
             ctx.sessionAttribute("flash", message);
@@ -92,8 +101,12 @@ public class UrlController {
         List<Url> urls = urlRepository.findAll();
         String flashMessage = ctx.consumeSessionAttribute("flash");
         String flashType = ctx.consumeSessionAttribute("flashType");
-        if (flashMessage == null) flashMessage = "";
-        if (flashType == null) flashType = "info";
+        if (flashMessage == null) {
+            flashMessage = "";
+        }
+        if (flashType == null) {
+            flashType = "info";
+        }
 
         UrlsPage page = new UrlsPage(urls, flashMessage, flashType);
         ctx.render("urls.jte", Map.of("page", page));
