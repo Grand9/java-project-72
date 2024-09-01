@@ -18,8 +18,9 @@ import java.util.Map;
 public class UrlController {
 
     private static final Logger logger = LoggerFactory.getLogger(UrlController.class);
-    private final UrlRepository urlRepository;
+    private UrlRepository urlRepository;
 
+    // Конструктор с инициализацией UrlRepository
     public UrlController(UrlRepository urlRepository) {
         if (urlRepository == null) {
             throw new IllegalArgumentException("UrlRepository cannot be null");
@@ -27,7 +28,14 @@ public class UrlController {
         this.urlRepository = urlRepository;
     }
 
+    private void ensureRepositoryInitialized() {
+        if (urlRepository == null) {
+            throw new IllegalStateException("UrlRepository is not initialized");
+        }
+    }
+
     public Handler showFormHandler = ctx -> {
+        ensureRepositoryInitialized();
         String flashMessage = ctx.consumeSessionAttribute("flash");
         String flashType = ctx.consumeSessionAttribute("flashType");
         if (flashMessage == null) flashMessage = "";
@@ -40,6 +48,7 @@ public class UrlController {
     };
 
     public Handler createUrlHandler = ctx -> {
+        ensureRepositoryInitialized();
         String urlInput = ctx.formParam("url");
         String message;
         String type;
@@ -79,6 +88,7 @@ public class UrlController {
     };
 
     public Handler listUrlsHandler = ctx -> {
+        ensureRepositoryInitialized();
         List<Url> urls = urlRepository.findAll();
         String flashMessage = ctx.consumeSessionAttribute("flash");
         String flashType = ctx.consumeSessionAttribute("flashType");
@@ -90,6 +100,7 @@ public class UrlController {
     };
 
     public Handler showUrlHandler = ctx -> {
+        ensureRepositoryInitialized();
         Url url;
         try {
             int id = Integer.parseInt(ctx.pathParam("id"));
