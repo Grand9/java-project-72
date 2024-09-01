@@ -1,14 +1,14 @@
 package hexlet.code.controller;
 
+import hexlet.code.dto.urls.UrlsPage;
 import hexlet.code.model.Url;
 import hexlet.code.repository.UrlRepository;
+import hexlet.code.util.NamedRoutes;
 import io.javalin.http.Handler;
 
 import java.net.URI;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,10 +23,11 @@ public class UrlController {
     public Handler showFormHandler = ctx -> {
         String message = ctx.queryParam("message");
         String type = ctx.queryParam("type");
-        Map<String, Object> model = new HashMap<>();
-        model.put("flashMessage", message != null ? message : "");
-        model.put("flashType", type != null ? type : "info");
-        ctx.render("index.jte", model);
+
+        ctx.render("index.jte", Map.of(
+                "flashMessage", message != null ? message : "",
+                "flashType", type != null ? type : "info"
+        ));
     };
 
     public Handler createUrlHandler = ctx -> {
@@ -59,21 +60,17 @@ public class UrlController {
                 message = "Некорректный URL";
                 type = "error";
             }
-            ctx.redirect("/?message=" + message + "&type=" + type);
+            ctx.redirect(NamedRoutes.homePath() + "?message=" + message + "&type=" + type);
         }
     };
 
     public Handler listUrlsHandler = ctx -> {
-        List<Url> urls;
-        try {
-            urls = urlRepository.findAll();
-        } catch (SQLException e) {
-            ctx.redirect("/?message=Ошибка%20при%20извлечении%20данных%20из%20базы%20данных&type=error");
-            return;
-        }
-        Map<String, Object> model = new HashMap<>();
-        model.put("urls", urls);
-        ctx.render("urls.jte", model);
+        List<Url> urls = urlRepository.findAll();
+        String flashMessage = ctx.queryParam("message");
+        String flashType = ctx.queryParam("type");
+
+        UrlsPage page = new UrlsPage(urls, flashMessage, flashType);
+        ctx.render("urls.jte", Map.of("page", page));
     };
 
     public Handler showUrlHandler = ctx -> {
@@ -81,12 +78,9 @@ public class UrlController {
         try {
             int id = Integer.parseInt(ctx.pathParam("id"));
             url = urlRepository.findById(id);
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             ctx.status(400);
             ctx.render("400.jte");
-            return;
-        } catch (SQLException e) {
-            ctx.redirect("/?message=Ошибка%20при%20извлечении%20данных%20из%20базы%20данных&type=error");
             return;
         }
 
