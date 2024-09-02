@@ -1,14 +1,15 @@
 package hexlet.code;
 
-import javax.sql.DataSource;
+import com.zaxxer.hikari.HikariDataSource;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public abstract class BaseRepository {
+public class BaseRepository {
 
-    protected final DataSource dataSource;
+    protected final HikariDataSource dataSource;
 
-    protected BaseRepository(DataSource dataSource) {
+    public BaseRepository(HikariDataSource dataSource) {
         this.dataSource = dataSource;
     }
 

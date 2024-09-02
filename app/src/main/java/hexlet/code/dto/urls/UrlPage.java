@@ -11,7 +11,7 @@ public class UrlPage extends BasePage {
     private final Url url;
     private final List<UrlCheck> urlChecks;
 
-    public UrlPage(Url url, List<UrlCheck> urlChecks) {
+    public UrlPage(String flash, String flashType, Url url, List<UrlCheck> urlChecks) {
         super(flash, flashType);
         this.url = url;
         this.urlChecks = urlChecks;
