@@ -13,4 +13,8 @@ public class NamedRoutes {
     public static String homePath() {
         return "/";
     }
+
+    public static String checkPath(int urlId) {
+        return "/urls/" + urlId + "/check";
+    }
 }

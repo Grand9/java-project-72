@@ -1,17 +1,18 @@
 package hexlet.code.controller;
 
 import io.javalin.http.Handler;
-import io.javalin.http.NotFoundResponse;
+import hexlet.code.dto.urls.UrlPage;
 import hexlet.code.model.Url;
+import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.UrlRepository;
 
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UrlController {
 
+    public Handler createUrlHandler;
+    public Handler listUrlsHandler;
     private UrlRepository urlRepository;
 
     public UrlController(UrlRepository urlRepository) {
@@ -22,26 +23,13 @@ public class UrlController {
         int id = Integer.parseInt(ctx.pathParam("id"));
         Url url = urlRepository.getUrlById(id);
         if (url == null) {
-            throw new NotFoundResponse("URL not found");
-        }
-        Map<String, Object> model = new HashMap<>();
-        model.put("url", url);
-        ctx.render("url/show.jte", model);
-    };
-
-
-    public Handler createUrlHandler = ctx -> {
-        String name = ctx.formParam("name");
-        if (name == null || name.isEmpty()) {
-            ctx.status(400).result("Name is required");
+            ctx.status(404).result("URL not found");
             return;
         }
-        Url url = new Url(name, LocalDateTime.now());
-        try {
-            urlRepository.save(url);
-            ctx.redirect("/urls");
-        } catch (SQLException e) {
-            ctx.status(500).result("Database error");
-        }
+
+        List<UrlCheck> urlChecks = urlRepository.getUrlChecks(id);
+        UrlPage urlPage = new UrlPage(url, urlChecks);
+
+        ctx.render("show.jte", Map.of("page", urlPage));
     };
 }
