@@ -12,7 +12,8 @@ public class UrlCheck {
     private final String description;
     private final LocalDateTime createdAt;
 
-    public UrlCheck(int id, int urlId, int statusCode, String title, String h1, String description, LocalDateTime createdAt) {
+    public UrlCheck(int id, int urlId, int statusCode, String title, String h1, String description,
+                    LocalDateTime createdAt) {
         this.id = id;
         this.urlId = urlId;
         this.statusCode = statusCode;
