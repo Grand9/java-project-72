@@ -1,11 +1,21 @@
 package hexlet.code.model;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.sql.Timestamp;
+
+@Getter
+@Setter
+@ToString
 public class Url {
+
     private Long id;
     private String name;
-    private LocalDateTime createdAt;
+    private Timestamp createdAt;
 
-    // Constructors, getters, and setters
+    public Url(String name) {
+        this.name = name;
+    }
 }

@@ -1,11 +1,7 @@
 package hexlet.code.repository;
 
-import javax.sql.DataSource;
+import com.zaxxer.hikari.HikariDataSource;
 
-public abstract class BaseRepository {
-    protected final DataSource dataSource;
-
-    public BaseRepository(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
+public class BaseRepository {
+    public static HikariDataSource dataSource;
 }
