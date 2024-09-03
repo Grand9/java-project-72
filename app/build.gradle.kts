@@ -14,10 +14,6 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testImplementation("org.xerial:sqlite-jdbc:3.41.2.2")
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
-    implementation("io.javalin:javalin-testtools:6.3.0")
     implementation("com.h2database:h2:2.2.224")
     implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("org.postgresql:postgresql:42.7.2")
@@ -31,14 +27,13 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
     implementation("org.slf4j:slf4j-api:2.0.0")
-    implementation( "ch.qos.logback:logback-classic:1.4.12")
+    implementation("ch.qos.logback:logback-classic:1.4.12")
     testImplementation("org.assertj:assertj-core:3.25.3")
     testImplementation(platform("org.junit:junit-bom:5.10.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     implementation("com.konghq:unirest-java:3.14.5")
     implementation("org.jsoup:jsoup:1.17.2")
     implementation("org.junit.jupiter:junit-jupiter-engine:5.10.2")
-
 }
 
 application {

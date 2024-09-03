@@ -24,8 +24,17 @@ jobs:
       - uses: gradle/gradle-build-action@v2
         with:
           gradle-version: 8.7
-          arguments: build
+          arguments: build jacocoTestReport
           build-root-directory: app
 
-      - run: cd app && ./gradlew checkstyleMain
-      - run: cd app && ./gradlew build
+      - name: Run Checkstyle
+        run: cd app && ./gradlew checkstyleMain
+
+      - name: Run Tests
+        run: cd app && ./gradlew test
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-coverage
+          path: app/build/reports/jacoco/test/html/
