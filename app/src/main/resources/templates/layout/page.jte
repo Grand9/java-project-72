@@ -6,7 +6,7 @@
 @param BasePage page = null
 
 <!doctype html>
-<html lang="en"> //
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">

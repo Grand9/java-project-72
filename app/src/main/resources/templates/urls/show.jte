@@ -6,7 +6,7 @@
 page = page,
 content = @`
     <div class="container-lg mt-5">
-        <h2>Сайт ${page.getName()}</h2>
+        <h2>Сайт ${page.getName()}</h2> //
         <table class="table mt-3">
             <tbody>
             <tr>

@@ -7,7 +7,7 @@ import lombok.Getter;
 
 import java.sql.Timestamp;
 import java.util.List;
-//
+
 @AllArgsConstructor
 @Getter
 public class UrlPage extends BasePage {

@@ -60,7 +60,8 @@ public class App {
         try (var connection = dataSource.getConnection();
              var statement = connection.createStatement()) {
             statement.execute(sql);
-        }//
+        }
+
         BaseRepository.dataSource = dataSource;
 
         var app = Javalin.create(config -> {

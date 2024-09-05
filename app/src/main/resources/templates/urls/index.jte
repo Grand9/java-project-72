@@ -5,7 +5,7 @@
 @template.layout.page(
 page = page,
 content = @`
-    <div class="container-lg mt-5">
+    <div class="container-lg mt-5"> //
         <h2>Сайты</h2>
         <table class="table table-striped mt-3">
             <thead>

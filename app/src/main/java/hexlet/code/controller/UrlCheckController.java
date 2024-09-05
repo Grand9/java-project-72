@@ -15,7 +15,7 @@ import org.jsoup.nodes.Document;
 
 import java.sql.SQLException;
 import java.util.Objects;
-//
+
 public class UrlCheckController {
     public static void create(Context ctx) throws SQLException {
         var urlId = ctx.pathParamAsClass("id", Long.class).get();
