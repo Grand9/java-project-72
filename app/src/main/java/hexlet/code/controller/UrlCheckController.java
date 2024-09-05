@@ -14,6 +14,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class UrlCheckController {
     public static void create(Context ctx) throws SQLException {
@@ -28,12 +29,12 @@ public class UrlCheckController {
             var statusCode = response.getStatus();
             var title = doc.title();
 
-            var h1Temp = doc.selectFirst("h1");
-            var h1 = h1Temp == null ? "" : h1Temp.text();
-
-            var descriptionTemp = doc.selectFirst("meta[name=description]");
-            var description = descriptionTemp == null ? "" : descriptionTemp.attr("content");
-
+            var h1 = doc.selectFirst("h1") != null ? Objects.requireNonNull(doc.selectFirst("h1"))
+                    .text() : "";
+            var description = doc.selectFirst("meta[name=description]") != null
+                    ? Objects.requireNonNull(doc.selectFirst("meta[name=description]"))
+                    .attr("content")
+                    : "";
 
             var urlCheck = new UrlCheck(statusCode, title, h1, description, urlId);
             UrlCheckRepository.save(urlCheck);
@@ -44,7 +45,7 @@ public class UrlCheckController {
             ctx.sessionAttribute("flash", "Некорректный адрес");
             ctx.sessionAttribute("flash-type", "danger");
         } catch (Exception e) {
-            ctx.sessionAttribute("flash", e.getMessage());
+            ctx.sessionAttribute("flash", "Произошла ошибка при проверке страницы");
             ctx.sessionAttribute("flash-type", "danger");
         }
 
