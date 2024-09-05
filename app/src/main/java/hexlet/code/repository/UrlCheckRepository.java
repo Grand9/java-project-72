@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Map;
 import java.util.HashMap;
-
+//
 public final class UrlCheckRepository extends BaseRepository {
     public static void save(UrlCheck urlCheck) throws SQLException {
         String sql = "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at)"

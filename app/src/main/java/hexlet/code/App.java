@@ -15,7 +15,6 @@ import io.javalin.rendering.template.JavalinJte;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
@@ -23,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class App {
 
-    public static void main(String[] args) throws SQLException, IOException {
+    public static void main(String[] args) throws SQLException {
         var app = getApp();
         app.start(getPort());
     }
@@ -53,6 +52,7 @@ public class App {
         var dataSource = new HikariDataSource(hikariConfig);
 
         var inputStream = App.class.getClassLoader().getResourceAsStream("schema.sql");
+        assert inputStream != null;
         var reader = new BufferedReader(new InputStreamReader(inputStream));
         var sql = reader.lines().collect(Collectors.joining("\n"));
 
@@ -60,7 +60,7 @@ public class App {
         try (var connection = dataSource.getConnection();
              var statement = connection.createStatement()) {
             statement.execute(sql);
-        }
+        }//
         BaseRepository.dataSource = dataSource;
 
         var app = Javalin.create(config -> {
@@ -69,9 +69,7 @@ public class App {
             config.fileRenderer(new JavalinJte(createTemplateEngine()));
         });
 
-        app.before(ctx -> {
-            ctx.contentType("text/html; charset=utf-8");
-        });
+        app.before(ctx -> ctx.contentType("text/html; charset=utf-8"));
 
         app.get(NamedRoutes.mainPath(), RootController::index);
         app.get(NamedRoutes.urlsPath(), UrlController::index);

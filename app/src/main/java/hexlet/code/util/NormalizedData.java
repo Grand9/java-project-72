@@ -3,7 +3,7 @@ package hexlet.code.util;
 import java.net.URL;
 
 public class NormalizedData {
-    public static String getNormalizedURL(URL url) {
+    public static String getNormalizedURL(URL url) {//
         String protocol = url.getProtocol();
         String symbols = "://";
         String host = url.getHost();
