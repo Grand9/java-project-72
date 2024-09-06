@@ -19,6 +19,10 @@ jobs:
         with:
           java-version: '20'
           distribution: 'temurin'
+      - name: List files in root directory
+        run: ls -la
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
