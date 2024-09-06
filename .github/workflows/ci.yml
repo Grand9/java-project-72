@@ -1,4 +1,4 @@
-name: CI
+name: Java CI
 
 on:
   push:
@@ -14,39 +14,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Set up JDK 21
+      - name: Set up JDK 20
         uses: actions/setup-java@v3
         with:
-          java-version: '21'
+          java-version: '20'
           distribution: 'temurin'
-      
-      - uses: gradle/gradle-build-action@v2
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 8.7
-          arguments: build jacocoTestReport
+          arguments: build
           build-root-directory: app
-
-      - name: Run Checkstyle
-        run: cd app && ./gradlew checkstyleMain
-
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v3
+      - name: Generate Jacoco Report
+        run: ./gradlew jacocoTestReport
+      - name: Publish code coverage
+        if: ${{ github.event_name == 'push' }}
+        uses: paambaati/codeclimate-action@v5.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+          JACOCO_SOURCE_PATH: ${{github.workspace}}/app/src/main/java
         with:
-          name: jacoco-coverage
-          path: app/build/reports/jacoco/test/html/
-
-      - name: Upload JaCoCo report to CodeClimate
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-
-      - name: Send coverage to CodeClimate
-        run: |
-          ./cc-test-reporter format-coverage --input-type jacoco ./app/build/reports/jacoco/test/jacocoTestReport.xml --add-prefix app/src/main/java
-          ./cc-test-reporter upload-coverage
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          coverageCommand: ./gradlew jacocoTestReport
+          debug: true
+          coverageLocations: ${{github.workspace}}/app/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
