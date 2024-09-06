@@ -17,7 +17,7 @@
           crossorigin="anonymous">
     <style>
         .navbar {
-            border-bottom: 2px solid #6c757d; /* Серый цвет линии */
+            border-bottom: 2px solid #6c757d;
         }
         .navbar-nav .nav-link {
             color: #ffffff !important;
